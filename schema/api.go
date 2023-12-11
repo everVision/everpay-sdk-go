@@ -128,3 +128,10 @@ type RespRegister struct {
 	Sig       string `json:"sig"`
 	Timestamp int64  `json:"timestamp"`
 }
+
+type TxOpts struct {
+	Address       string
+	TokenTag      string
+	Action        string
+	WithoutAction string
+}
