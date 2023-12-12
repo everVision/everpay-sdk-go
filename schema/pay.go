@@ -11,6 +11,8 @@ import (
 const (
 	BundleTxVersionV1 = "v1"
 	TxActionBundle    = "bundle"
+	TxActionSet       = "set"
+	TxActionRegister  = "register"
 )
 
 type Transaction struct {
@@ -71,11 +73,6 @@ func (t *Transaction) ArHash() []byte {
 type BalanceTreeHash struct {
 	RootHash string `json:"rootHash"`
 	EverHash string `json:"everHash"`
-}
-
-type InternalErr struct {
-	Index int    `json:"index"`
-	Msg   string `json:"msg"`
 }
 
 type InternalStatus struct {

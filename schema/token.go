@@ -1,6 +1,7 @@
 package schema
 
 import (
+	"math/big"
 	"strings"
 )
 
@@ -10,6 +11,12 @@ const (
 	ChainTypeArweave    = "arweave"
 	ChainTypeCrossArEth = "arweave,ethereum"
 	ChainTypeEverpay    = "everpay"
+	ChainTypeMoonbeam   = "moonbeam"
+	ChainTypeMoonbase   = "moonbase"
+	ChainTypeEth        = "ethereum"
+	ChainTypeCfx        = "conflux"
+	ChainTypeBsc        = "bsc"
+	ChainTypePlaton     = "platon"
 
 	TxActionTransfer        = "transfer"
 	TxActionMint            = "mint"
@@ -24,6 +31,14 @@ const (
 	TxActionPause           = "pause"
 
 	ZeroAddress = "0x0000000000000000000000000000000000000000"
+
+	OracleEthChainType     = "ethereum"
+	OracleMoonChainType    = "moon"
+	OracleCfxChainType     = "conflux"
+	OracleBscChainType     = "bsc"
+	OraclePlatonChainType  = "platon"
+	OracleArweaveChainType = "arweave"
+	OracleEverpayChainType = "everpay"
 )
 
 type Token struct {
@@ -37,6 +52,18 @@ type Token struct {
 
 func (t *Token) Tag() string {
 	return tag(t.ChainType, t.Symbol, t.ID)
+}
+
+type TokenTransaction struct {
+	MintHash        string // everHash, ethTxHash ...
+	Action          string
+	From            string // notice: Case Sensitive !!!
+	To              string // notice: Case Sensitive !!!
+	Amount          *big.Int
+	Fee             *big.Int
+	FeeRecipient    string // notice: Case Sensitive !!!
+	TargetChainType string
+	Data            string
 }
 
 type TargetChain struct {
