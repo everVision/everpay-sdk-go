@@ -124,7 +124,7 @@ func (s *SDK) Mint(tokenTag string, amount *big.Int, chainType, to, txData strin
 func (s *SDK) TransferTokenOwnerTx(tokenTag string, newOwner string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	return s.sendTx(tokenInfo, schema.TxActionTransferOwner, "0", newOwner, big.NewInt(0), "")
 }
@@ -132,7 +132,7 @@ func (s *SDK) TransferTokenOwnerTx(tokenTag string, newOwner string) (*schema.Tr
 func (s *SDK) AddWhiteListTx(tokenTag string, whiteList []string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	data, err := sjson.Set("", "whiteList", whiteList)
 	if err != nil {
@@ -144,7 +144,7 @@ func (s *SDK) AddWhiteListTx(tokenTag string, whiteList []string) (*schema.Trans
 func (s *SDK) RemoveWhiteListTx(tokenTag string, whiteList []string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	data, err := sjson.Set("", "whiteList", whiteList)
 	if err != nil {
@@ -156,7 +156,7 @@ func (s *SDK) RemoveWhiteListTx(tokenTag string, whiteList []string) (*schema.Tr
 func (s *SDK) PauseWhiteListTx(tokenTag string, pause bool) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	data, err := sjson.Set("", "pause", pause)
 	if err != nil {
@@ -168,7 +168,7 @@ func (s *SDK) PauseWhiteListTx(tokenTag string, pause bool) (*schema.Transaction
 func (s *SDK) AddBlackListTx(tokenTag string, blackList []string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	data, err := sjson.Set("", "blackList", blackList)
 	if err != nil {
@@ -180,7 +180,7 @@ func (s *SDK) AddBlackListTx(tokenTag string, blackList []string) (*schema.Trans
 func (s *SDK) RemoveBlackListTx(tokenTag string, blackList []string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	data, err := sjson.Set("", "blackList", blackList)
 	if err != nil {
@@ -192,7 +192,7 @@ func (s *SDK) RemoveBlackListTx(tokenTag string, blackList []string) (*schema.Tr
 func (s *SDK) PauseBlackListTx(tokenTag string, pause bool) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	data, err := sjson.Set("", "pause", pause)
 	if err != nil {
@@ -204,7 +204,7 @@ func (s *SDK) PauseBlackListTx(tokenTag string, pause bool) (*schema.Transaction
 func (s *SDK) PauseTokenTx(tokenTag string, pause bool) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	data, err := sjson.Set("", "pause", pause)
 	if err != nil {
@@ -223,7 +223,7 @@ func (s *SDK) Bundle(tokenTag string, to string, amount *big.Int, bundleWithSigs
 func (s *SDK) sendTransfer(tokenTag string, receiver string, amount *big.Int, data string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	action := schema.TxActionTransfer
 	fee := tokenInfo.TransferFee
@@ -233,7 +233,7 @@ func (s *SDK) sendTransfer(tokenTag string, receiver string, amount *big.Int, da
 func (s *SDK) sendBurnTx(tokenTag string, targetChainType, receiver string, amount *big.Int, data string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	action := schema.TxActionBurn
 	tFee, err := s.Cli.Fee(tokenTag)
@@ -242,10 +242,10 @@ func (s *SDK) sendBurnTx(tokenTag string, targetChainType, receiver string, amou
 	}
 	fee, ok := tFee.Fee.BurnFeeMap[targetChainType]
 	if !ok {
-		return nil, schema.ErrBurnFeeNotExist
+		return nil, schema.ERR_BURN_FEE_NOT_EXIST
 	}
 	if data != "" && !gjson.Valid(data) {
-		return nil, schema.ErrNotJsonData
+		return nil, schema.ERR_NOT_JSON_DATA
 	}
 
 	// add targetChainType in data
@@ -259,10 +259,10 @@ func (s *SDK) sendBurnTx(tokenTag string, targetChainType, receiver string, amou
 func (s *SDK) sendMintTx(tokenTag string, targetChainType, receiver string, amount *big.Int, data string) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	if data != "" && !gjson.Valid(data) {
-		return nil, schema.ErrNotJsonData
+		return nil, schema.ERR_NOT_JSON_DATA
 	}
 	// add targetChainType in data
 	txData, err := sjson.Set(data, "targetChainType", targetChainType)
@@ -275,7 +275,7 @@ func (s *SDK) sendMintTx(tokenTag string, targetChainType, receiver string, amou
 func (s *SDK) sendBundle(tokenTag string, receiver string, amount *big.Int, bundle schema.BundleData) (*schema.Transaction, error) {
 	tokenInfo, ok := s.tokens[tokenTag]
 	if !ok {
-		return nil, schema.ErrTokenNotExist
+		return nil, schema.ERR_TOKEN_NOT_EXIST
 	}
 	action := schema.TxActionBundle
 	fee := tokenInfo.BundleFee
