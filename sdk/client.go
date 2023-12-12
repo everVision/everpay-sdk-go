@@ -271,7 +271,7 @@ func (c *Client) BundleByHash(everHash string) (
 	tx = *txRes.Tx
 
 	if tx.Action != schema.TxActionBundle {
-		err = errors.New("err_not_bundle_tx")
+		err = schema.ErrNotBundleTx
 		return
 	}
 
