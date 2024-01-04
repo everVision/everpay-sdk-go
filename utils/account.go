@@ -278,7 +278,6 @@ func verifyFidoAuthnSig(sig, hexHash string, accName, userId string, public weba
 	session := webauthn.SessionData{
 		Challenge:            utils.Base64Encode([]byte(hexHash)),
 		UserID:               user.WebAuthnID(),
-		UserDisplayName:      user.WebAuthnDisplayName(),
 		AllowedCredentialIDs: nil,
 		Expires:              time.Time{},
 		UserVerification:     protocol.VerificationRequired,

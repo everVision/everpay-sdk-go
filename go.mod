@@ -8,7 +8,7 @@ require (
 	github.com/everFinance/goar v1.5.7
 	github.com/everFinance/goether v1.1.9
 	github.com/getsentry/sentry-go v0.25.0
-	github.com/go-webauthn/webauthn v0.8.2
+	github.com/go-webauthn/webauthn v0.8.3
 	github.com/google/uuid v1.4.0
 	github.com/inconshreveable/log15 v2.16.0+incompatible
 	github.com/stretchr/testify v1.8.4
@@ -32,7 +32,7 @@ require (
 	github.com/everFinance/ttcrsa v1.1.3 // indirect
 	github.com/fxamacker/cbor/v2 v2.5.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
-	github.com/go-webauthn/revoke v0.1.9 // indirect
+	github.com/go-webauthn/x v0.1.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/google/go-tpm v0.9.0 // indirect
 	github.com/hamba/avro v1.5.6 // indirect
