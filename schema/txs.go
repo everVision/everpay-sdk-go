@@ -1,5 +1,13 @@
 package schema
 
+const (
+	TxStatusConfirmed = "confirmed"
+	TxStatusPackaged  = "packaged"
+
+	InternalStatusSuccess = "success"
+	InternalStatusFailed  = "failed"
+)
+
 type TxResponse struct {
 	RawId          int64  `json:"rawId"`
 	ID             string `json:"id"` // AR tx id
