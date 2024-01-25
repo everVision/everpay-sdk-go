@@ -18,8 +18,8 @@ import (
 var log = common.NewLog("sdk")
 
 type SDK struct {
-	tokens       map[string]schema.TokenInfo // tag -> TokenInfo
-	feeRecipient string
+	Info   schema.Info
+	tokens map[string]schema.TokenInfo // tag -> TokenInfo
 
 	signerType string // ecc, rsa
 	signer     interface{}
@@ -77,7 +77,7 @@ func (s *SDK) updatePayInfo() error {
 		tokens[t.Tag] = t
 	}
 	s.tokens = tokens
-	s.feeRecipient = info.FeeRecipient
+	s.Info = info
 	return nil
 }
 
@@ -302,7 +302,7 @@ func (s *SDK) sendTx(tokenInfo schema.TokenInfo, action, fee, receiver string, a
 		To:           receiver,
 		Amount:       amount.String(),
 		Fee:          fee,
-		FeeRecipient: s.feeRecipient,
+		FeeRecipient: s.Info.FeeRecipient,
 		Nonce:        fmt.Sprintf("%d", s.getNonce()),
 		TokenID:      tokenInfo.ID,
 		ChainType:    tokenInfo.ChainType,
