@@ -2,6 +2,7 @@ package sdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 	"strings"
@@ -218,6 +219,25 @@ func (s *SDK) Bundle(tokenTag string, to string, amount *big.Int, bundleWithSigs
 		Bundle: bundleWithSigs,
 	}
 	return s.sendBundle(tokenTag, to, amount, bundle)
+}
+
+func (s *SDK) BundleWithData(tokenTag string, to string, amount *big.Int, bundleWithSigs schema.BundleWithSigs, jsonData string) (*schema.Transaction, error) {
+	if !gjson.Valid(jsonData) {
+		return nil, errors.New("invalid json")
+	}
+
+	tokenInfo, ok := s.tokens[tokenTag]
+	if !ok {
+		return nil, schema.ERR_TOKEN_NOT_EXIST
+	}
+	action := schema.TxActionBundle
+	fee := tokenInfo.BundleFee
+	by, _ := json.Marshal(bundleWithSigs)
+	data, err := sjson.SetRaw(jsonData, "bundle", string(by))
+	if err != nil {
+		return nil, err
+	}
+	return s.sendTx(tokenInfo, action, fee, to, amount, data)
 }
 
 func (s *SDK) sendTransfer(tokenTag string, receiver string, amount *big.Int, data string) (*schema.Transaction, error) {
