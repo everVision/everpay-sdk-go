@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/everVision/everpay-kits/utils"
 	"math/big"
 	"strings"
 	"sync"
@@ -97,6 +98,11 @@ func (s *SDK) SymbolToTagArr(symbol string) []string {
 }
 
 func (s *SDK) Transfer(tokenTag string, amount *big.Int, to, data string) (*schema.Transaction, error) {
+	// when to is email
+	if utils.IsEmailAddress(to) {
+		// gen everid
+		to = utils.GenEverId(to)
+	}
 	return s.sendTransfer(tokenTag, to, amount, data)
 }
 

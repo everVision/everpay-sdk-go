@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 
@@ -294,4 +295,20 @@ func verifyFidoAuthnSig(sig, hexHash string, accName, userId string, public weba
 		return nil, err
 	}
 	return credential, nil
+}
+
+func GenEverId(email string) string {
+	e := strings.ToLower(email)
+	hash := sha256.Sum256([]byte(e))
+	idBytes := hash[:]
+	sum := checkSum(idBytes)
+	fullBytes := append(idBytes, sum...)
+	id := schema.EverIdPrefix + hex.EncodeToString(fullBytes) // ever + hash + checkSum
+	return id
+}
+
+func IsEmailAddress(email string) bool {
+	pattern := `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*`
+	reg := regexp.MustCompile(pattern)
+	return reg.MatchString(email)
 }
