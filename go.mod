@@ -1,6 +1,6 @@
 module github.com/everVision/everpay-kits
 
-go 1.21.1
+go 1.20
 
 require (
 	github.com/ethereum/go-ethereum v1.13.5

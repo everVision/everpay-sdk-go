@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 
@@ -110,6 +111,8 @@ func GetTargetChainTypeFromData(txData, txAction, txChainType string) (string, e
 
 func GetEverToNativeChainType(everChainType string) (string, error) {
 	switch everChainType {
+	case schema.ChainTypeAos:
+		return schema.OracleAosChainType, nil
 	case schema.ChainTypeArweave, schema.ChainTypeCrossArEth:
 		return schema.OracleArweaveChainType, nil
 	case schema.ChainTypeEth:
@@ -151,6 +154,21 @@ func GetMintTargetTxHash(everTxChainType, everTxData string, everTxHash string) 
 		return arTx.ID, nil
 	case schema.OracleEverpayChainType:
 		return everTxHash, nil
+	case schema.OracleAosChainType:
+		// get data(items), first item
+		items := struct {
+			MainItem   arTypes.BundleItem `json:"mainItem"`
+			PushedItem arTypes.BundleItem `json:"pushedItem"`
+		}{}
+		if err = json.Unmarshal([]byte(everTxData), &items); err != nil {
+			log.Error("mint tx data unmarshal failed, data", everTxData, "err", err)
+			return
+		}
+		if items.MainItem.Id == "" {
+			log.Error("aos mintTx data incorrect")
+			return "", errors.New("incorrect txData")
+		}
+		return items.MainItem.Id, nil
 	default:
 		err = fmt.Errorf("not support this targetChainType: %s", targetChainType)
 		return
