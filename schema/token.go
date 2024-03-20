@@ -9,6 +9,7 @@ const (
 	TxVersionV1 = "v1"
 
 	ChainTypeArweave    = "arweave"
+	ChainTypeAos        = "aostest"
 	ChainTypeCrossArEth = "arweave,ethereum"
 	ChainTypeEverpay    = "everpay"
 	ChainTypeMoonbeam   = "moonbeam"
@@ -39,6 +40,7 @@ const (
 	OraclePlatonChainType  = "platon"
 	OracleArweaveChainType = "arweave"
 	OracleEverpayChainType = "everpay"
+	OracleAosChainType     = "aostest"
 )
 
 type Token struct {
@@ -77,7 +79,7 @@ func tag(chainType, tokenSymbol, tokenID string) string {
 	// process tokenId
 	var id string
 	switch chainType {
-	case ChainTypeArweave:
+	case ChainTypeArweave, ChainTypeAos:
 		id = tokenID
 	case ChainTypeCrossArEth: // now only AR token
 		ids := strings.Split(tokenID, ",")
