@@ -70,7 +70,7 @@ func (c *Client) GetTokens() (tokens map[string]*schema.Token, err error) {
 			Decimals:     tokenInfo.Decimals,
 			TargetChains: targetChains,
 		}
-		tokens[tok.Tag()] = tok
+		tokens[tokenInfo.Tag] = tok
 	}
 	return
 }
