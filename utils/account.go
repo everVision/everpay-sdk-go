@@ -249,7 +249,7 @@ func verifyFidoAuthnSig(sig, hexHash string, accName, userId string, public weba
 	if err != nil {
 		return nil, err
 	}
-
+	UserHandle = protocol.URLEncodedBase64{} // not need verify userHandle userId
 	car := protocol.CredentialAssertionResponse{
 		PublicKeyCredential: protocol.PublicKeyCredential{
 			Credential: protocol.Credential{
